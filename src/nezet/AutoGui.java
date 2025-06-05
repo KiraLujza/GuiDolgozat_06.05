@@ -66,6 +66,11 @@ public class AutoGui extends javax.swing.JFrame {
         jMenu4.setText("jMenu4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setText("Rendszam:");
 
@@ -304,6 +309,16 @@ public class AutoGui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(rootPane, "Aznap %s dolgozott.".formatted(rendszamok));
         
     }//GEN-LAST:event_mnuDolgozottActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        
+        int kilep = JOptionPane.showConfirmDialog(rootPane, "Biztosan kilép a programból?", "Kilépés", JOptionPane.OK_CANCEL_OPTION);
+        if (kilep == JOptionPane.OK_OPTION)
+        {
+            System.exit(0);
+        }
+        
+    }//GEN-LAST:event_formWindowClosing
 
    private int osszbevetel(String rendszam)
     {
