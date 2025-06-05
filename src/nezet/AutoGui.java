@@ -128,12 +128,27 @@ public class AutoGui extends javax.swing.JFrame {
         jMenu5.add(mnu_xyz456);
 
         mnuDohanyzo.setText("Autok amiben lehet dohányozni");
+        mnuDohanyzo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuDohanyzoActionPerformed(evt);
+            }
+        });
         jMenu5.add(mnuDohanyzo);
 
         mnuleghosszabFuv.setText("auto a leghosszabb fuvarral");
+        mnuleghosszabFuv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuleghosszabFuvActionPerformed(evt);
+            }
+        });
         jMenu5.add(mnuleghosszabFuv);
 
         mnuDolgozott.setText("2022.12.31-ei dolgozók");
+        mnuDolgozott.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuDolgozottActionPerformed(evt);
+            }
+        });
         jMenu5.add(mnuDolgozott);
 
         jMenuBar1.add(jMenu5);
@@ -150,19 +165,20 @@ public class AutoGui extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(txtDatum, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
+                        .addComponent(txtDatum))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbRendszam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cmbRendszam, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 18, Short.MAX_VALUE)))
                 .addGap(57, 57, 57))
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(txtFiz_Mod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtFiz_Mod, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(9, 9, 9)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -171,9 +187,9 @@ public class AutoGui extends javax.swing.JFrame {
                             .addComponent(jLabel6))
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtOssz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTav, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtBorr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtTav)
+                            .addComponent(txtOssz)
+                            .addComponent(txtBorr))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -236,9 +252,9 @@ public class AutoGui extends javax.swing.JFrame {
             {
                 String sor = sorok.get(i);
                 Auto auto = new Auto(sor);
-                //System.out.println(auto.toString());
                 autok.add(auto);
                 cmbRendszam.addItem(auto.getRednszam()+ " / " );
+               
             }
             
             megjelenit(autok.getFirst());
@@ -257,12 +273,92 @@ public class AutoGui extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbRendszamActionPerformed
 
     private void mnu_xyz456ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnu_xyz456ActionPerformed
-        // TODO add your handling code here:
+        String rendszam = "xyz-456";
+        JOptionPane.showMessageDialog(rootPane, "Az %s rendszámú autó összbevétele: %d Ft".formatted(rendszam, osszbevetel(rendszam)));
+        
     }//GEN-LAST:event_mnu_xyz456ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void mnuDohanyzoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuDohanyzoActionPerformed
+        
+            JOptionPane.showMessageDialog(rootPane, "%s lehet minden autóban dohányozni.".formatted(dohanyzas()?"Nem":"Igen, "));
+        
+    }//GEN-LAST:event_mnuDohanyzoActionPerformed
+
+    private void mnuleghosszabFuvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuleghosszabFuvActionPerformed
+        
+        int leghosszabbIndex = leghosszabbFuvarIndex();
+        JOptionPane.showMessageDialog(rootPane, "A leghosszabb fuvar a(z) %s rendszámú autóé volt (%.2 km)".formatted(autok.get(leghosszabbIndex).getRednszam(), autok.get(leghosszabbIndex).getTav()));
+        
+    }//GEN-LAST:event_mnuleghosszabFuvActionPerformed
+
+    private void mnuDolgozottActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuDolgozottActionPerformed
+       
+        List<String> dolgozok = kikDolgoztak("2022.12.31.");
+        String rendszamok = "";
+
+        for (int i = 0; i < dolgozok.size(); i++) 
+        {
+            rendszamok += dolgozok.get(i) + " ";
+        }
+        
+        JOptionPane.showMessageDialog(rootPane, "Aznap %s dolgozott.".formatted(rendszamok));
+        
+    }//GEN-LAST:event_mnuDolgozottActionPerformed
+
+   private int osszbevetel(String rendszam)
+    {
+        int osszbevetel = 0;
+        for (int i = 0; i < autok.size(); i++) 
+        {
+            if(autok.get(i).getRednszam().equals(rendszam))
+            {
+                osszbevetel += autok.get(i).getOsszeg() + autok.get(i).getBorravalo();
+            }
+        }
+        return osszbevetel;
+    }
+    
+    private boolean dohanyzas()
+    {
+        int N = autok.size();
+        int i = 0;
+        
+        while(i < N && autok.get(i).getDohanyzo())
+        {
+            i++;
+        }
+        return i < N;
+    }
+    
+    private int leghosszabbFuvarIndex()
+    {
+        int maxxIndex = 0;
+        
+        for (int i = 0; i < autok.size(); i++) 
+        {
+            if(autok.get(i).getTav() > autok.get(maxxIndex).getTav())
+            {
+                maxxIndex = i;
+            }
+        }
+        //System.out.println(maxxIndex);
+        return maxxIndex;
+    }
+    
+    private List<String> kikDolgoztak(String datum)
+    {
+        List<String> dolgoztak = new ArrayList<>();
+        
+        for (int i = 0; i < autok.size(); i++) 
+        {
+            if(autok.get(i).getDatum().equals(datum) && !(dolgoztak.contains(autok.get(i).getRednszam())))
+            {
+                dolgoztak.add(autok.get(i).getRednszam());
+            }
+        }
+        //System.out.println(dolgoztak);
+        return dolgoztak;
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -294,6 +390,15 @@ public class AutoGui extends javax.swing.JFrame {
             }
         });
     }
+    private void megjelenit(Auto auto) 
+    {
+        txtFiz_Mod.setText(auto.getFiz_Mod());
+        txtTav.setText(auto.getTav() + "");
+        txtOssz.setText(auto.getOsszeg() + "");
+        txtBorr.setText(auto.getBorravalo() + "");
+        chDohanyzo.setSelected(auto.getDohanyzo());
+        txtDatum.setText(auto.getDatum()+ "");
+    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox chDohanyzo;
