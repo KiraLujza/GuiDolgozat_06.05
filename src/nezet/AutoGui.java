@@ -4,17 +4,22 @@
  */
 package nezet;
 
-/**
- *
- * @author KissKiraLujza(Szf_N_
- */
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import main.Auto;
 public class AutoGui extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AutoGui
-     */
+    private List<Auto> autok;
+    
     public AutoGui() {
         initComponents();
+         autok = new ArrayList<>();
     }
 
     /**
@@ -26,6 +31,10 @@ public class AutoGui extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtDatum = new javax.swing.JTextField();
@@ -42,6 +51,19 @@ public class AutoGui extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        mnu_xyz456 = new javax.swing.JMenuItem();
+        mnuDohanyzo = new javax.swing.JMenuItem();
+        mnuleghosszabFuv = new javax.swing.JMenuItem();
+        mnuDolgozott = new javax.swing.JMenuItem();
+
+        jMenu2.setText("File");
+        jMenuBar2.add(jMenu2);
+
+        jMenu3.setText("Edit");
+        jMenuBar2.add(jMenu3);
+
+        jMenu4.setText("jMenu4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,6 +74,12 @@ public class AutoGui extends javax.swing.JFrame {
         txtDatum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDatumActionPerformed(evt);
+            }
+        });
+
+        cmbRendszam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbRendszamActionPerformed(evt);
             }
         });
 
@@ -80,9 +108,35 @@ public class AutoGui extends javax.swing.JFrame {
         jMenu1.setText("File");
 
         jMenuItem1.setText("Betöltés");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
+
+        jMenu5.setText("Feladatok");
+
+        mnu_xyz456.setText("xyz-456 össz bevétel");
+        mnu_xyz456.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnu_xyz456ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(mnu_xyz456);
+
+        mnuDohanyzo.setText("Autok amiben lehet dohányozni");
+        jMenu5.add(mnuDohanyzo);
+
+        mnuleghosszabFuv.setText("auto a leghosszabb fuvarral");
+        jMenu5.add(mnuleghosszabFuv);
+
+        mnuDolgozott.setText("2022.12.31-ei dolgozók");
+        jMenu5.add(mnuDolgozott);
+
+        jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
 
@@ -173,6 +227,39 @@ public class AutoGui extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDatumActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        try 
+        {
+            List<String> sorok = Files.readAllLines(Path.of("fuvarok.txt"));
+            
+            for (int i = 2; i < sorok.size(); i++) 
+            {
+                String sor = sorok.get(i);
+                Auto auto = new Auto(sor);
+                //System.out.println(auto.toString());
+                autok.add(auto);
+                cmbRendszam.addItem(auto.getRednszam()+ " / " );
+            }
+            
+            megjelenit(autok.getFirst());
+            
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(Auto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void cmbRendszamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRendszamActionPerformed
+        int i = cmbRendszam.getSelectedIndex();
+        Auto auto = autok.get(i);
+        megjelenit(auto);
+    }//GEN-LAST:event_cmbRendszamActionPerformed
+
+    private void mnu_xyz456ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnu_xyz456ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnu_xyz456ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -218,8 +305,17 @@ public class AutoGui extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem mnuDohanyzo;
+    private javax.swing.JMenuItem mnuDolgozott;
+    private javax.swing.JMenuItem mnu_xyz456;
+    private javax.swing.JMenuItem mnuleghosszabFuv;
     private javax.swing.JTextField txtBorr;
     private javax.swing.JTextField txtDatum;
     private javax.swing.JTextField txtFiz_Mod;
